@@ -1,4 +1,9 @@
 package com.api.babercontrol.BarberControl.services;
 
-public class UsuarioService {
+import com.api.babercontrol.BarberControl.models.Usuario;
+
+import java.util.List;
+
+public interface UsuarioService {
+    List<Usuario> findAll();
 }
