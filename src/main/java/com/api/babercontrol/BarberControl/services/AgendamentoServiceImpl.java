@@ -19,6 +19,7 @@ public class AgendamentoServiceImpl implements AgendamentoService{
     @Override
     @Transactional
     public List<Agendamento> findAll(){
+
         return (List<Agendamento>) repository.findAll();
     }
 }
