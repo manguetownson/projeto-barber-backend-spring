@@ -1,4 +1,9 @@
 package com.api.babercontrol.BarberControl.services;
 
-public class ProdutoService {
+import com.api.babercontrol.BarberControl.models.Produto;
+
+import java.util.List;
+
+public interface ProdutoService {
+    List<Produto> findAll();
 }
