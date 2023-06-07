@@ -1,4 +1,7 @@
 package com.api.babercontrol.BarberControl.repositories;
 
-public interface ServicoRepository {
+import com.api.babercontrol.BarberControl.models.Servico;
+import org.springframework.data.repository.CrudRepository;
+
+public interface ServicoRepository extends CrudRepository<Servico, Long> {
 }
