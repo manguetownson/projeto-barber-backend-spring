@@ -1,4 +1,9 @@
 package com.api.babercontrol.BarberControl.services;
 
-public class AgendamentoService {
+import com.api.babercontrol.BarberControl.models.Agendamento;
+
+import java.util.List;
+
+public interface AgendamentoService {
+    List<Agendamento> findAll();
 }
