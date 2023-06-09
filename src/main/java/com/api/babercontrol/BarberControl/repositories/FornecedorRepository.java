@@ -1,7 +1,7 @@
 package com.api.babercontrol.BarberControl.repositories;
 
 import com.api.babercontrol.BarberControl.models.Fornecedor;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FornecedorRepository extends CrudRepository<Fornecedor, Long> {
+public interface FornecedorRepository extends JpaRepository<Fornecedor, Long> {
 }
