@@ -14,6 +14,6 @@ public class Fornecedor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long nome;
-    private Long produto;
+    private String nome;
+    private String produto;
 }
