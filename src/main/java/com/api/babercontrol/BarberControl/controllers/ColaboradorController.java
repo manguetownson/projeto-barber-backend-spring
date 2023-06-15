@@ -9,12 +9,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ColaboradorController {
@@ -32,5 +30,25 @@ public class ColaboradorController {
         var ColaboradorModel = new Colaborador();
         BeanUtils.copyProperties(colaboradorDTO, ColaboradorModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(colaboradorRepository.save(ColaboradorModel));
+    }
+    @PutMapping("/colaborador/{id}")
+    public ResponseEntity<Object> updateColaborador(@PathVariable(value = "id")Long id,
+                                                @RequestBody @Valid ColaboradorDTO colaboradorDTO) {
+        Optional<Colaborador> colaborador0 = colaboradorRepository.findById(id);
+        if(colaborador0.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("colaborador não encontrado");
+        }
+        var colaboradorModel = colaborador0.get();
+        BeanUtils.copyProperties(colaboradorDTO, colaboradorModel);
+        return ResponseEntity.status(HttpStatus.OK).body(colaboradorRepository.save(colaboradorModel));
+    }
+    @DeleteMapping("/colaborador/{id}")
+    public ResponseEntity<Object> deleteColaborador(@PathVariable(value="id") Long id){
+        Optional<Colaborador> colaborador0 = colaboradorRepository.findById(id);
+        if(colaborador0.isEmpty()){
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("colaborador não encontrado");
+        }
+        colaboradorRepository.delete(colaborador0.get());
+        return ResponseEntity.status(HttpStatus.OK).body("colaborador deletado");
     }
 }

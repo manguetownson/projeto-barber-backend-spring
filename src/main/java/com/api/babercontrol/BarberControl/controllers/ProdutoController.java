@@ -9,12 +9,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ProdutoController {
@@ -33,5 +31,25 @@ public class ProdutoController {
         var ProdutoModel = new Produto();
         BeanUtils.copyProperties(produtoDTO, ProdutoModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(ProdutoModel));
+    }
+    @PutMapping("/produto/{id}")
+    public ResponseEntity<Object> updateProduto(@PathVariable(value = "id")Long id,
+                                                @RequestBody @Valid ProdutoDTO produtoDTO) {
+        Optional<Produto> produto0 = produtoRepository.findById(id);
+        if(produto0.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("produto não encontrado");
+        }
+        var produtoModel = produto0.get();
+        BeanUtils.copyProperties(produtoDTO, produtoModel);
+        return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produtoModel));
+    }
+    @DeleteMapping("/produto/{id}")
+    public ResponseEntity<Object> deleteAgendamento(@PathVariable(value="id") Long id){
+        Optional<Produto> produto0 = produtoRepository.findById(id);
+        if(produto0.isEmpty()){
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("produto não encontrado");
+        }
+        produtoRepository.delete(produto0.get());
+        return ResponseEntity.status(HttpStatus.OK).body("produto deletado");
     }
 }

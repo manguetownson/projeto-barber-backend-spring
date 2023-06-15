@@ -9,12 +9,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class FornecedorController {
@@ -33,5 +31,25 @@ public class FornecedorController {
         var FornecedorModel = new Fornecedor();
         BeanUtils.copyProperties(fornecedorDTO, FornecedorModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(fornecedorRepository.save(FornecedorModel));
+    }
+    @PutMapping("/fornecedor/{id}")
+    public ResponseEntity<Object> updateFornecedor(@PathVariable(value = "id")Long id,
+                                                @RequestBody @Valid FornecedorDTO fornecedorDTO) {
+        Optional<Fornecedor> fornecedor0 = fornecedorRepository.findById(id);
+        if(fornecedor0.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("fornecedor não encontrado");
+        }
+        var fornecedorModel = fornecedor0.get();
+        BeanUtils.copyProperties(fornecedorDTO, fornecedorModel);
+        return ResponseEntity.status(HttpStatus.OK).body(fornecedorRepository.save(fornecedorModel));
+    }
+    @DeleteMapping("/fornecedor/{id}")
+    public ResponseEntity<Object> deleteFornecedor(@PathVariable(value="id") Long id){
+        Optional<Fornecedor> fornecedor0 = fornecedorRepository.findById(id);
+        if(fornecedor0.isEmpty()){
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("fornecedor não encontrado");
+        }
+        fornecedorRepository.delete(fornecedor0.get());
+        return ResponseEntity.status(HttpStatus.OK).body("fornecedor deletado");
     }
 }
